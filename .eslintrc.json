@@ -1,0 +1,17 @@
+{
+  "extends": ["eslint-config-mflorence99", "eslint-config-prettier"],
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": [
+    "eslint-plugin-import",
+    "eslint-plugin-import-splitnsort",
+    "eslint-plugin-prefer-arrow"
+  ],
+  "root": true,
+  "rules": {
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "sort-imports": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/naming-convention": "off"
+  }
+}

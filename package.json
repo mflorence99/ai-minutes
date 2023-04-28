@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "5.3.1",
+    "@typescript-eslint/parser": "^5",
+    "chalk": "^5",
+    "eslint": "^8",
+    "eslint-config-mflorence99": "^1",
+    "eslint-config-prettier": "^8",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-import-splitnsort": "^1",
+    "eslint-plugin-prefer-arrow": "^1",
+    "jsome": "^2",
+    "openai": "^3",
+    "prettier": "^2",
+    "prettier-plugin-package": "^1",
+    "stylelint": "^15",
+    "stylelint-config-standard": "^32",
+    "stylelint-order": "^6",
+    "stylelint-scss": "^4"
+  }
+}
