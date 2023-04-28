@@ -72,13 +72,6 @@ for (let i = 0; i < ilines.length; i++) {
   }
 }
 
-// 🔥 count the summary words
-// const wordCount = summaries.reduce(
-//   (acc, summary) => acc + summary.split(' ').length,
-//   0
-// );
-// console.log(`${wordCount} words to summarize`);
-
 // 👇 develop the summary
 let temp = '';
 let zlines: string[] = ['<ul>'];
