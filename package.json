@@ -1,21 +1,33 @@
 {
+  "type": "module",
+  "scripts": {
+    "ai-minutes": "ts-node --esm ai-minutes.ts",
+    "clean:deps": "rm -rf node_modules && rm -f package-lock.json && npm install && npm outdated",
+    "lint": "eslint --ext .ts .",
+    "prettier": "prettier --write .",
+    "transcribe": "ts-node --esm transcribe.ts"
+  },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "5.3.1",
-    "@typescript-eslint/parser": "^5",
+    "@google-cloud/speech": "^5",
+    "@inquirer/prompts": "^1",
     "chalk": "^5",
+    "jsome": "^2",
+    "openai": "^3"
+  },
+  "devDependencies": {
+    "@types/node": "^18",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
     "eslint": "^8",
     "eslint-config-mflorence99": "^1",
     "eslint-config-prettier": "^8",
     "eslint-plugin-import": "^2",
     "eslint-plugin-import-splitnsort": "^1",
     "eslint-plugin-prefer-arrow": "^1",
-    "jsome": "^2",
-    "openai": "^3",
     "prettier": "^2",
     "prettier-plugin-package": "^1",
-    "stylelint": "^15",
-    "stylelint-config-standard": "^32",
-    "stylelint-order": "^6",
-    "stylelint-scss": "^4"
+    "ts-node": "^10",
+    "tslib": "^2",
+    "typescript": "^5"
   }
 }

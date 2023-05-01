@@ -1,15 +1,23 @@
 import { Configuration } from 'openai';
 import { OpenAIApi } from 'openai';
 
+import { appendFileSync } from 'fs';
+import { input } from '@inquirer/prompts';
+import { readFileSync } from 'fs';
+import { writeFileSync } from 'fs';
+
 import chalk from 'chalk';
 
 const configuration = new Configuration({
-  apiKey: Deno.env.get('OPEN_AI_KEY')
+  apiKey: process.env['OPEN_AI_KEY']
 });
 
 const openai = new OpenAIApi(configuration);
 
-const dir = Deno.args[0];
+// const models = await openai.listModels();
+// jsome(models.data.data.map((data: any) => data.root));
+
+const dir = await input({ message: 'Enter directory of minutes' });
 
 const cfg = `./${dir}/minutes.json`;
 const chk = `./${dir}/minutes.checkpoint`;
@@ -18,19 +26,19 @@ const ofn = `./${dir}/minutes.html`;
 const tfn = './template.html';
 
 // 👇 read and parse the config file
-const config = JSON.parse(await Deno.readTextFile(cfg));
+const config = JSON.parse(readFileSync(cfg).toString());
 
 // 👇 initialize the checkpoint file
-Deno.writeTextFile(chk, '');
+writeFileSync(chk, '');
 
 // 👇 read the raw minutes
-const raw = await Deno.readTextFile(ifn);
+const raw = readFileSync(ifn).toString();
 const ilines = raw.split('\n');
 
 // 👇 read the template
-const template = await Deno.readTextFile(tfn);
+const template = readFileSync(tfn).toString();
 
-// 👇 these are the converted lines
+// 👇 these are the edited lines
 const olines: string[] = [];
 
 // 👇 these ate the summary lines
@@ -47,28 +55,28 @@ for (let i = 0; i < ilines.length; i++) {
       console.log(chalk.red(`No name found on line ${i + 1} ${line}`));
       break;
     }
-    // 👇 name may be quoted (*) or already converted (+)
+    // 👇 name may be quoted (*) or already edited (+)
     let name = line.substring(0, j).trim();
     let quoted = false,
-      alreadyConverted = false;
+      alreadyEdited = false;
     if (name.endsWith('*')) {
       name = name.substring(0, name.length - 1);
       quoted = true;
     } else if (name.endsWith('+')) {
       name = name.substring(0, name.length - 1);
-      alreadyConverted = true;
+      alreadyEdited = true;
     }
-    // 👇 convert via GPT
+    // 👇 edit via GPT
     let text = line.substring(j + 1).trim();
-    if (!quoted && !alreadyConverted && i < 9999 /* 👈 limit is for testing */)
-      text = (await convert(text)).map((l) => `<p>${l}</p>`).join('\n');
-    // 👇 accumulate converted lines
+    if (!quoted && !alreadyEdited && i < 9999 /* 👈 limit is for testing */)
+      text = (await edit(text)).map((l) => `<p>${l}</p>`).join('\n');
+    // 👇 accumulate edited lines
     slines.push(`${name} says: ${text}`);
-    await Deno.writeTextFile(chk, `${name}${quoted ? '*' : '+'}: ${text}\n\n`, {
-      append: true
-    });
+    appendFileSync(chk, `${name}${quoted ? '*' : '+'}: ${text}\n\n`);
     if (quoted) olines.push(`<tr><td>${name}</td><td>"${text}"</td></tr>`);
     else olines.push(`<tr><td>${name}</td><td>${text}</td></tr>`);
+    // 👇 wait for rate limit
+    if (!quoted && !alreadyEdited) await sleep(30000);
   }
 }
 
@@ -81,6 +89,8 @@ for (let i = 0; i < slines.length; i++) {
   if (wordCount > 1400) {
     zlines = zlines.concat((await summarize(temp)).map((l) => `<li>${l}</li>`));
     temp = '';
+    // 👇 wait for rate limit
+    await sleep(30000);
   }
 }
 // 👇 don't forget the last batch
@@ -88,7 +98,7 @@ zlines = zlines.concat((await summarize(temp)).map((l) => `<li>${l}</li>`));
 zlines.push('</ul>');
 
 // 👇 substitute derived data into the template
-const converted = template
+const edited = template
   .replaceAll('{{ TITLE }}', config.title)
   .replaceAll('{{ SUBTITLE }}', config.subtitle)
   .replaceAll('{{ SUBJECT }}', config.subject)
@@ -96,26 +106,21 @@ const converted = template
   .replaceAll('{{ MINUTES }}', olines.join('\n'));
 
 // 👇 that's it!
-await Deno.writeTextFile(ofn, converted);
+writeFileSync(ofn, edited);
 
 // ////////////////////////////////////////////////////////////////////
 
-async function convert(text: string): Promise<string[]> {
-  console.log(
-    chalk.yellow('Calling GPT 3.5 ... waiting 30 secs for rate limit')
-  );
-  console.log(chalk.green(text));
-  console.log();
-  await sleep(30000);
+async function edit(text: string): Promise<string[]> {
+  console.log(chalk.yellow('openai.createChatCompletion to edit statement'));
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
       {
-        content: `Convert the following trancsription of my words into sentences and paragraphs\n\n${text}`,
-        role: 'user'
+        role: 'user',
+        content: `Summarize my statement in the first person:\n\n${text}`
       }
     ],
-    temperature: 1,
+    temperature: 0.5,
     max_tokens: 2048
   });
   return response.data.choices[0].message.content
@@ -124,21 +129,18 @@ async function convert(text: string): Promise<string[]> {
 }
 
 async function summarize(text: string): Promise<string[]> {
-  console.log(chalk.blue('Calling GPT 3.5 ... waiting 30 secs for rate limit'));
-  console.log();
-  await sleep(30000);
+  console.log(chalk.blue('openai.createChatCompletion to summarize'));
   const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
       {
-        content: `Summarize the following discussion into a few bullet points:\n\n${text}`,
-        role: 'user'
+        role: 'user',
+        content: `Summarize this discussion into a few bullet points:\n\n${text}`
       }
     ],
-    temperature: 1,
+    temperature: 0.5,
     max_tokens: 2048
   });
-  console.log(chalk.cyan(response.data.choices[0].message.content));
   return response.data.choices[0].message.content
     .split('\n')
     .filter((line: string) => line.length > 0)
@@ -149,5 +151,6 @@ async function summarize(text: string): Promise<string[]> {
 }
 
 function sleep(ms: number): Promise<void> {
+  console.log(chalk.cyan(`... waiting ${ms / 1000} secs for rate limit`));
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
