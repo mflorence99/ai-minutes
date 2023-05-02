@@ -7,6 +7,7 @@ import { readFileSync } from 'fs';
 import { writeFileSync } from 'fs';
 
 import chalk from 'chalk';
+import dayjs from 'dayjs';
 
 const configuration = new Configuration({
   apiKey: process.env['OPEN_AI_KEY']
@@ -41,42 +42,32 @@ const template = readFileSync(tfn).toString();
 // 👇 these are the edited lines
 const olines: string[] = [];
 
-// 👇 these ate the summary lines
+// 👇 these are the summary lines
 const slines: string[] = [];
 
 // 👇 process each line in the raw input
 for (let i = 0; i < ilines.length; i++) {
   const line = ilines[i];
-  if (line.length > 1) {
-    // 👇 extract data from input
-    const j: number = line.indexOf(':');
-    // 🔥 check to see if a reasonable name is found
-    if (j === -1 || j > 20) {
-      console.log(chalk.red(`No name found on line ${i + 1} ${line}`));
-      break;
-    }
-    // 👇 name may be quoted (*) or already edited (+)
-    let name = line.substring(0, j).trim();
-    let quoted = false,
-      alreadyEdited = false;
-    if (name.endsWith('*')) {
-      name = name.substring(0, name.length - 1);
-      quoted = true;
-    } else if (name.endsWith('+')) {
-      name = name.substring(0, name.length - 1);
-      alreadyEdited = true;
-    }
+  if (line.length > 0) {
+    const match = line.match(/^\[(.*)\] ([^*+:]*)([*+]?): (.*)$/im);
+    const ts = match[1];
+    const name = match[2];
+    const alreadyEdited = match[3] === '+';
+    const quoted = match[3] === '*';
+    let text = match[4];
     // 👇 edit via GPT
-    let text = line.substring(j + 1).trim();
     if (!quoted && !alreadyEdited && i < 9999 /* 👈 limit is for testing */)
       text = (await edit(text)).map((l) => `<p>${l}</p>`).join('\n');
     // 👇 accumulate edited lines
     slines.push(`${name} says: ${text}`);
-    appendFileSync(chk, `${name}${quoted ? '*' : '+'}: ${text}\n\n`);
-    if (quoted) olines.push(`<tr><td>${name}</td><td>"${text}"</td></tr>`);
-    else olines.push(`<tr><td>${name}</td><td>${text}</td></tr>`);
+    appendFileSync(chk, `[${ts}] ${name}${quoted ? '*' : '+'}: ${text}\n\n`);
+    olines.push(
+      `<tr><td>${name}</td><td>${ts}</td><td>${quoted ? '"' : ''}${text}${
+        quoted ? '"' : ''
+      }</td></tr>`
+    );
     // 👇 wait for rate limit
-    if (!quoted && !alreadyEdited) await sleep(30000);
+    if (!quoted && !alreadyEdited && i < ilines.length - 1) await sleep(30000);
   }
 }
 
@@ -101,6 +92,7 @@ zlines.push('</ul>');
 const edited = template
   .replaceAll('{{ TITLE }}', config.title)
   .replaceAll('{{ SUBTITLE }}', config.subtitle)
+  .replaceAll('{{ DATE }}', dayjs(config.date).format('MMMM D, YYYY'))
   .replaceAll('{{ SUBJECT }}', config.subject)
   .replaceAll('{{ SUMMARY }}', zlines.join('\n'))
   .replaceAll('{{ MINUTES }}', olines.join('\n'));

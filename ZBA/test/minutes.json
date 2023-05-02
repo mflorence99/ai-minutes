@@ -1,5 +1,12 @@
 {
+  "audio": {
+    "encoding": "MP3",
+    "gcsuri": "gs://washington-app-319514.appspot.com/minutes.mp3",
+    "sampleRateHertz": 32000
+  },
+  "date": "2023-05-02T09:36",
   "title": "Zoning Board of Adjustment",
+  "speakers": ["Bob", "Jim"],
   "subtitle": "Meeting Minutes Test",
   "subject": "Test Minutes"
 }

@@ -16,12 +16,13 @@
         padding: 4px;
       }
 
-      td:first-child {
+      td:nth-child(1) {
         font-weight: bold;
+        white-space: nowrap;
       }
 
-      td:not(:first-child) {
-        width: 100%;
+      td:nth-child(2) {
+        white-space: nowrap;
       }
 
       tr {
@@ -51,6 +52,8 @@
     <center><h1>{{ TITLE }}</h1></center>
 
     <center><h2>{{ SUBTITLE }}</h2></center>
+
+    <center><h2>{{ DATE }}</h2></center>
 
     <table class="disclaimer">
       <tr>
