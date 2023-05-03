@@ -6,8 +6,6 @@ import chalk from 'chalk';
 import dayjs from 'dayjs';
 import speech from '@google-cloud/speech';
 
-// ffmpeg -i minutes.m4a -ar 32000 minutes.mp3
-
 const client = new speech.v1p1beta1.SpeechClient();
 
 const dir = await input({ message: 'Enter directory of minutes' });
@@ -39,7 +37,7 @@ const transcriber = operation.promise();
 const poller = pollOperationProgress();
 const [[response]] = await Promise.all([transcriber, poller]);
 
-// 👇 we need only loog at the last result
+// 👇 we need only look at the last result
 //    https://cloud.google.com/speech-to-text/docs/multiple-voices
 
 let currentSpeakerTag = null;
@@ -50,7 +48,7 @@ const transcription: string[] = [];
 const wordsInfo =
   response.results[response.results.length - 1].alternatives[0].words;
 
-// 👇 this is how we format a "speech"
+// 👇 this is how we format a single "speech"
 const formatCurrentSpeech = (): string =>
   `[${currentStartTime}] ${currentSpeakerTag}: ${currentSpeech.join(' ')}`;
 

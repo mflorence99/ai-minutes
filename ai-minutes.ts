@@ -15,9 +15,6 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-// const models = await openai.listModels();
-// jsome(models.data.data.map((data: any) => data.root));
-
 const dir = await input({ message: 'Enter directory of minutes' });
 
 const cfg = `./${dir}/minutes.json`;
@@ -67,7 +64,7 @@ for (let i = 0; i < ilines.length; i++) {
       }</td></tr>`
     );
     // 👇 wait for rate limit
-    if (!quoted && !alreadyEdited && i < ilines.length - 1) await sleep(30000);
+    if (!quoted && !alreadyEdited) await sleep(30000);
   }
 }
 
@@ -80,8 +77,8 @@ for (let i = 0; i < slines.length; i++) {
   if (wordCount > 1400) {
     zlines = zlines.concat((await summarize(temp)).map((l) => `<li>${l}</li>`));
     temp = '';
-    // 👇 wait for rate limit
-    await sleep(30000);
+    // 👇 wait for rate limit (no need on last one)
+    if (i < slines.length - 1) await sleep(30000);
   }
 }
 // 👇 don't forget the last batch
@@ -136,7 +133,7 @@ async function summarize(text: string): Promise<string[]> {
   return response.data.choices[0].message.content
     .split('\n')
     .filter((line: string) => line.length > 0)
-    .map((line: string) => line.replace(/-[\s*]/, ''))
+    .map((line: string) => line.replace(/^-[\s*]/, ''))
     .map((line: string) =>
       line.endsWith('.') ? line.substring(0, line.length - 1) : line
     );
