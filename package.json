@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "@google-cloud/speech": "^5",
-    "@inquirer/prompts": "^1",
+    "@inquirer/prompts": "^2",
     "chalk": "^5",
     "dayjs": "^1",
     "jsome": "^2",
     "openai": "^3"
   },
   "devDependencies": {
-    "@types/node": "^18",
+    "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "eslint": "^8",

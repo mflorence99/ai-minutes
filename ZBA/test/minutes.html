@@ -8,42 +8,37 @@
         margin: 2rem;
       }
 
-      table {
-        width: 100%;
-      }
-
-      td {
-        padding: 4px;
-      }
-
-      td:nth-child(1) {
-        font-weight: bold;
-        white-space: nowrap;
-      }
-
-      td:nth-child(2) {
-        white-space: nowrap;
-      }
-
-      td:nth-child(3) {
-        width: 100%;
-      }
-
-      tr {
-        vertical-align: center;
-      }
-
       table.disclaimer {
         border-spacing: 1px;
         border-collapse: separate;
+        width: 100%;
+      }
+
+      table.disclaimer td {
+        padding: 4px;
+        font-size: smaller;
       }
 
       table.disclaimer tr {
         background-color: #e0e0e0;
+        vertical-align: center;
       }
 
-      table.disclaimer td {
-        font-size: smaller;
+      table.minutes {
+        width: 100%;
+      }
+
+      table.minutes td {
+        padding: 4px;
+      }
+
+      table.minutes td.speaker {
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      table.minutes td.timestamp {
+        white-space: nowrap;
       }
 
       table.minutes tr {
@@ -85,90 +80,21 @@
     <h2>Summary of Proceedings</h2>
 
     <ul>
-      <li>
-        Bob watched Harvey Mackay mention a 76-year-old who finished the Boston
-        Marathon, which made him realize the importance of diet on health
-      </li>
-      <li>
-        Bob asked three questions to people and their answers became chapters
-        for a book
-      </li>
-      <li>
-        Marci Shimoff helped Bob transcribe the interviews and he promised to
-        write the book
-      </li>
-      <li>
-        Bob wants to hear Jim's thoughts on the topic and if he has any tips for
-        networking
-      </li>
-      <li>
-        Bob believes that diet can impact success and performance, especially
-        for someone who speaks a lot and has a busy schedule
-      </li>
-    </ul>
+<li>Bob was inspired to write a book about how food affects health after watching Harvey Mackay finish the Boston Marathon at age 76</li>
+<li>He asked three questions to gather responses for the book's chapters, with Marci Shimoff helping transcribe</li>
+<li>Bob believes that food can impact success and energy levels, and wants to hear Jim's thoughts on the topic</li>
+<li>Jim mentions he can't text too early and Bob explains his perspective on the topic</li>
+</ul>
 
     <h2>Detailed Minutes</h2>
 
     <table class="minutes">
-      <tr>
-        <td>Bob</td>
-        <td>09:36 am</td>
-        <td>
-          <p>
-            I was watching Harvey Mackay and he mentioned one of our backers who
-            just finished the Boston Marathon at 76 years old. This made me
-            realize that the way we eat affects our health and I started asking
-            three questions to everyone. The answers were all different and
-            created chapters for a book. Marci Shimoff helped me transcribe the
-            interviews and I promised to write the book. Now, I want to
-            introduce you and hear your thoughts on the topic.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td>Jim</td>
-        <td>09:37 am</td>
-        <td>"doing? Good hanging in there."</td>
-      </tr>
-      <tr>
-        <td>Bob</td>
-        <td>09:37 am</td>
-        <td>
-          <p>
-            had any personal experiences with that? Also, I'm curious to know if
-            you have any tips for networking and building a strong Rolodex.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td>Jim</td>
-        <td>09:39 am</td>
-        <td>"text you too early to"</td>
-      </tr>
-      <tr>
-        <td>Bob</td>
-        <td>09:39 am</td>
-        <td>
-          <p>
-            I believe that it's important to consider the impact of your diet on
-            your success. While there are successful people who eat unhealthy
-            food, it seems that many people report feeling low energy if they
-            don't eat well. This could be especially important for someone who
-            speaks a lot and has a busy schedule, as eating heavy or unhealthy
-            foods could negatively affect their performance on stage.
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td>Jim</td>
-        <td>09:40 am</td>
-        <td>"So that's"</td>
-      </tr>
-      <tr>
-        <td>Bob</td>
-        <td>09:40 am</td>
-        <td>"that's kind of the angle."</td>
-      </tr>
+      <tr><td class="speaker">Bob</td><td><p>I was watching Harvey Mackay, one of our backers, and he mentioned finishing the Boston Marathon at 76 years old. It made me realize that the way you eat affects your health and sparked the idea for a book. I asked three questions to everyone and their unique responses created the chapters. Marci Shimoff helped transcribe and I promised to write the book. Now, I want to introduce you and hear your thoughts on the topic.</p></td></tr>
+<tr><td class="speaker">Jim</td><td>"doing? Good hanging in there."</td></tr>
+<tr><td class="speaker">Bob</td><td><p>had any personal experiences with that? Also, I wanted to ask about your experience with networking and how it has helped you in your career. I'll be checking out your website, RickFreshman.com, and your bio for more information.</p></td></tr>
+<tr><td class="speaker">Jim</td><td>"text you too early to"</td></tr>
+<tr><td class="speaker">Bob</td><td><p>I believe that it's important to consider the impact of food on our level of success. While there are successful people who eat unhealthy food, the general consensus is that it can affect our energy levels. If I have a busy schedule and do a lot of speaking, eating unhealthy food may result in a lack of energy on stage.</p></td></tr>
+<tr><td class="speaker">Jim</td><td>"So that's kind of the angle."</td></tr>
     </table>
   </body>
 </html>

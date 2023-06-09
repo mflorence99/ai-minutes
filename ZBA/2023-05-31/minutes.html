@@ -1,0 +1,738 @@
+<html>
+  <head>
+    <title>Bean Application for a Variance</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        font-size: 14px;
+        margin: 2rem;
+      }
+
+      table.disclaimer {
+        border-spacing: 1px;
+        border-collapse: separate;
+        width: 100%;
+      }
+
+      table.disclaimer td {
+        padding: 4px;
+        font-size: smaller;
+      }
+
+      table.disclaimer tr {
+        background-color: #e0e0e0;
+        vertical-align: center;
+      }
+
+      table.minutes {
+        width: 100%;
+      }
+
+      table.minutes td {
+        padding: 4px;
+      }
+
+      table.minutes td.speaker {
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      table.minutes td.timestamp {
+        white-space: nowrap;
+      }
+
+      table.minutes tr {
+        vertical-align: top;
+      }
+    </style>
+  </head>
+
+  <body>
+    <center><h1>Zoning Board of Adjustment</h1></center>
+
+    <center><h2>Meeting Minutes May 31, 2023</h2></center>
+
+    <center><h2>May 31, 2023</h2></center>
+
+    <table class="disclaimer">
+      <tr>
+        <td>
+          <img
+            width="64"
+            src="data:image/png;base64,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"
+          />
+        </td>
+        <td style="font-size: 12px; width: 100%">
+          These minutes were produced first by Office 365's voice-to-text
+          transcription of an audio recording of the meeting. Then, ZBA software
+          was used to drive
+          <a href="https://platform.openai.com/docs/api-reference"
+            >Open AI’s GPT 3.5</a
+          >
+          model to convert the transcription into grammatical sentences and
+          paragraphs. Words actually spoken are enclosed in quotes.
+        </td>
+      </tr>
+    </table>
+
+    <h1>Bean Application for a Variance</h1>
+
+    <h2>Summary of Proceedings</h2>
+
+    <ul>
+      <li>
+        The Washington Zoning Board of Adjustment meeting is called to order
+        with several members present
+      </li>
+      <li>Backlog of minutes are approved unanimously</li>
+      <li>
+        The second reading of the amended Rules of Procedure is accepted as
+        written
+      </li>
+      <li>
+        Harlan Bean presents his case for a variance application, but there are
+        measurement discrepancies
+      </li>
+      <li>
+        Bean requests to keep the shed for storage purposes, but is willing to
+        remove the deck and overhang
+      </li>
+      <li>
+        Questions are asked about the completion of the garage and the timing of
+        tree cutting on neighboring lots
+      </li>
+      <li>
+        Bean believes it's fair that trees were taken down before building the
+        garage, but is not sure when it happened
+      </li>
+      <li>
+        Bean is concerned about privacy with his neighbors and wants to keep a
+        shed for storage and family get-togethers
+      </li>
+      <li>
+        Hatch clarifies that only a hardship arising from the property itself
+        can be considered for granting a variance
+      </li>
+      <li>
+        Florence took photographs of the property and is skeptical that the shed
+        is causing a hardship
+      </li>
+      <li>
+        Bean wants to keep his property clean and good for the neighborhood and
+        property values, but is willing to remove the shed if necessary
+      </li>
+      <li>The discussion is centered around an application for a variance</li>
+      <li>
+        Some members of the board believe that the application should not be
+        considered due to previous decisions and principles established in past
+        cases
+      </li>
+      <li>
+        There are also concerns about the accuracy of measurements and the lack
+        of demonstrated special conditions or unnecessary hardship
+      </li>
+      <li>
+        The board discusses what should have happened at the original hearing
+        and the correct setbacks that should have been considered
+      </li>
+      <li>
+        A variance from LUO 201.5 was required due to the size of the new garage
+      </li>
+      <li>
+        Florence moves that the variance application submitted by Harlan and
+        Marie Bean be denied for four reasons
+      </li>
+      <li>Marshall seconds the motion</li>
+      <li>The motion is passed and the application for a variance is denied</li>
+      <li>
+        The meeting is adjourned and the next scheduled meeting will be on June
+        28, 2023
+      </li>
+    </ul>
+
+    <h2>Detailed Minutes</h2>
+
+    <table class="minutes">
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Good evening. It's 7:00pm and time to bring the May 31, 2023 meeting
+          of the Washington Zoning Board of Adjustment to order. Present this
+          evening are: Mr Harlan Bean, to present his application for a
+          variance; Board members Andrew Hatch, Linda Marshall and Gary Carney;
+          Executive Administrator Deb DeFosse; and myself, Board chair Mark
+          Florence.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Although new Board member Joe Tapp has been duly appointed by the
+          Select Board, and has signed his Oath of Office, he unfortunately
+          can't be here tonight.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The first order of business is to approve a backlog of minutes. First,
+          I move that we approve the minutes for our March 13 meeting, at which
+          we heard the Caruso appeal.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Carney</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The motion passes unanimously and the March 13 minutes are approved.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Next, I move that we approve the minutes for our March 27 meeting, at
+          which we heard the Mensh Appeal from an Administrative Decision.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Carney</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The motion passes unanimously and the March 27 minutes are approved.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">DeFosse</td>
+        <td>
+          In addition, I circulated earlier today the minutes of the April 26
+          meeting, at which the Board elected a new Chair and Vice-Chair, and
+          also conducted the first reading of the amended Rules of Procedure.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>I move that we approve those minutes.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Carney</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The motion passes unanimously and the April 26 minutes are approved.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Next on the agenda is unfinished business. I move that the second
+          reading of the amended Rules of Procedure be accepted as written. At
+          our June meeting we will have a final read and then vote to adopt
+          them. After that, we will be able to modify our Rules by a simple
+          vote.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Hatch</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>The motion passes unanimously.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Mr Bean, it's now your turn to present your case for your variance
+          application. But before you do, I'd like you to address some
+          measurement discrepancies Board member Carney and I discovered during
+          our site visit to your lot. [Florence circulates a document detailing
+          differences between claimed and observed measurements of house,
+          garage, and shed. This document is reproduced in the Notice of
+          Decision].
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          My biggest concern is that the shed is in fact 21.5' x 14' rather than
+          12' x 10' as you claimed.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I remember a few years ago when we were discussing coverage for our
+          garage, I asked about the overhang and was told that the measurements
+          were wall to wall. I didn't measure the overhang on the original shed
+          or deck, and it wasn't included in the original application. Removing
+          the shed would bring us below the 10% coverage limit, but I didn't
+          realize the lot had 15% coverage. Combining the two lots led to the
+          need for the original variance, and if we hadn't combined them, we
+          wouldn't have exceeded the coverage limit. I have no issues with my
+          neighbors' properties.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I think that the removal of the shed has made my backyard and my
+          neighbor's backyard completely open to each other, which has affected
+          our privacy. My request for the shed to stay is primarily for that
+          reason. I have kept my lot clean and neat, and I don't have equipment
+          outside like trailers and such. The shed is significant because it
+          would allow me to store my inherited toys like a jet ski, snowmobile,
+          snow blower, and lawn mower. I am willing to remove the deck off the
+          back of the shed and the overhang because they don't serve any
+          purpose.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>When was the garage completed?</td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I'm not sure how to answer your question because there were still some
+          things that needed to be done for the garage. However, the structure
+          was completed and wrapped up in the spring of 2022, which was just
+          about a year ago in May 2022.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>And when were the trees cut on your neighbors' lots?</td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I believe it's fair that the trees were taken down before we built the
+          garage. I'm not sure when it was done, but it was prior to our
+          planning and construction. Another tree had to be taken down recently
+          in the fall, which was closer to the deck. You can see the fresh cut
+          behind the deck.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          So are are you saying that those trees were taken down prior to the
+          December 2020 meeting, when you came before the Board and applied for
+          a variance to build your garage?
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I wouldn't bet my life on it, but I think that if the trees were cut
+          down and the septic system was installed, it was all done within a
+          close time frame. I don't remember exactly when it happened, but I do
+          remember being surprised when we came back and saw the backside of the
+          house was open. If my wife and I were aware of it at the time, we
+          would have been more concerned about the privacy issue.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Carney</td>
+        <td>
+          I recall visiting your lot in December 2020, but I don't remember
+          seeing any freshly cut trees. I do remember a number of large boulders
+          in front of the old cottage that made it difficult to measure.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>Yes, you are correct. We had all those boulders removed.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I admit that there are things I wish I could have done differently,
+          but when we were working on the project, we were focused on getting it
+          done quickly. We didn't want to delay it over a shed that wasn't a big
+          deal at the time. However, I have recently received my tax bills and
+          the town is still recognizing the property as two separate lots, which
+          is causing me to be taxed more.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">DeFosse</td>
+        <td>You would have to talk to the Assessors about that.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          I visited your lot last Wednesday and took a couple of photographs
+          that I'd like you and the Bard to review.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          Did you not receive the photographs I emailed on May 9? [The Board
+          reviews and compares photographs of Florence's phone and Bean's
+          printouts.]
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I am explaining that from the driveway, you cannot see the cut. The
+          coverage is not very extensive, especially when the foliage is out.
+          However, without growth, it's the same angle, and you can see it from
+          the deck. I am concerned about the privacy with my neighbors, and I
+          don't want any trailers in my garden. The shed is big enough to store
+          a lot of things, and it has become a great place for family
+          get-togethers.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Hatch</td>
+        <td>
+          I want to make clear that, while "unnecessary hardship" is an
+          essential criterion for granting a variance, your perceived lack of
+          privacy does not qualify as such. Only a hardship arising from the
+          property itself can be considered.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Hatch</td>
+        <td>
+          I am also concerned that the foundation for your variance application
+          is that, by not demolishing your shed as agreed, the building coverage
+          of your lot would only be 10.9% where 10% is allowed; whereas, in
+          fact, as we now know from Florence's measurements, coverage will be
+          15.81%. This number appears to undercut and justification for your
+          application.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          It seems to me, Mr Bean, that if you wanted to reverse the agreement
+          you made with the Select Board to demolish your shed, you should have
+          appealed back in January 2020, especially considering that the trees
+          had been cut and your lot exposed at that time. It's too late now, as
+          there is a strict 30 day window n which an appeal can be filed.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          As an observer, I am impressed with the zoning board's expertise and
+          attention to detail. However, my request to keep a shed requires an
+          appeal process that does not rely on technicalities or jurisdictional
+          issues. I understand that leaving my trailers outside may not cause
+          hardship, but it is not visually appealing.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          I'm skeptical that whatever fits in your shed, which is only 120
+          square feet inside, would force you to move so much outside of your
+          1200 square foot garage.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>
+          I have a 120 square foot shed outside that I don't want to be there.
+          It's unlocked and if you look inside, you'll see that its contents are
+          significant: aa trailer, cabinets, lumber, and other things. I want to
+          keep my property nice and enjoy my big yard, but the shed is a
+          hardship for me. I don't want to have to use a trailer to accomplish
+          what I want to do. I have the biggest open yard piece of grass on
+          Valley Rd. and it surprises me that I'm over on the coverage numbers.
+          I don't want to cram trailers and tractors on my property like many
+          other people do. I wish we had talked a week ago, as I would love for
+          you to come up and see what I mean. I have to move things around just
+          to enjoy the garage and have a place to shape out of the rain. What's
+          in the shed is a lot of things that can't get wet and shouldn't get
+          wet, so if I have to remove the shed, those things will have to go on
+          the trailer. I'm not trying to use this as a chip against the town, I
+          just want to keep my property clean and good for the neighborhood and
+          property values. I know that removing the shed will cause some other
+          things to be taken away, but I'm willing to do that to keep my
+          property nice.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Hatch</td>
+        <td>
+          We're going around in circles. Can we get back on point and determine
+          if we are in a position to make a finding tonight?
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Although a timely appeal back in January 2021 would have been Mr
+          Bean's best option, and the application before us for a variance is
+          problematic, I'm not sure what other options are now available. An
+          equitable waiver possibly, but all we can do tonight is to consider
+          the application before us.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Does anyone have any more questions for Mr Bean? Mr Bean, do you have
+          any more comments you wish to make?
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Carney</td>
+        <td>
+          Perhaps I should save this for our deliberative session, but my
+          problem is that the Board already voted on this issue over two years
+          ago, and that it us beyond our authority to reverse that now. Only a
+          timely appeal within the 30 day window could have accomplished that.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Mr Bean, whatever we decide tonight, you have the absolute right to
+          appeal and request a rehearing, if done within 30 days.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>I will not appeal any decision the Board makes.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          At 7:49pm, I move to close the public hearing and open our
+          deliberative session.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Hatch</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The motion passes unanimously, and we'll begin our deliberative
+          session. Mr Bean, you have the absolute right to remain and to listen
+          to all our deliberations. The only thing you can't do is make further
+          comments to the board.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Bean</td>
+        <td>I'm enjoying myself, so I'll remain.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          I see four problems with the application, the first two related to the
+          issue raised by Carney. The first is that there was an agreement made
+          on January 7, 2021 between Mr Bean and the Select Board in the form of
+          a permit for construction that required, as a condition subsequent,
+          that the shed by demolished. I don't believe we have the authority to
+          void that agreement.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The second problem I see is that there is a well-established principle
+          that the Board can't hear the same application twice. Under Fisher v.
+          Dover, it was established back in 1980 that "successive variance
+          proposals must demonstrate either (1) material changes in the proposed
+          use of the land or (2) material changes in the circumstances affecting
+          the merits of the application." I don't believe that Mr Bean has
+          demonstrated either requirement.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          My third objection is that the measurement discrepancies, not disputed
+          by Mr Bean, undercut the foundation of the application to such an
+          extent that we must deny it, nothwithstanding my earlier problems that
+          suggest we can't hear it in the first place. Building coverage of the
+          lot is not 10.9%, as claimed in the application, but in fact 15.81%.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Finally, if we were to consider this application de novo, I believe we
+          should reject it on its merits. No special conditions have been
+          demonstrated and no unnecessary hardship exists.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">DeFosse</td>
+        <td>
+          I want to point out that when the Select Board issued the permit for
+          construction back in January 2021, along with its requirement for the
+          removal of the shed, they did so as a consequence of the ZBA's
+          decision. Also, when Mr Bean recently met with the Select Board to
+          discuss if that condition could be removed, it was the selectmen who
+          advised Mr Bean to request a variance from the ZBA.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          I'd like to spend a minute covering what I believe should have
+          happened at the original hearing. First, the rear setback variance
+          should have been from LUO 403.1, not 202. When a building is being
+          altered or expanded, a setback of only 25' is required. The Board
+          clearly understood this, as the actual setback of the old cottage was
+          24', so a variance of 1' was requested (and granted.) We've seen
+          several times recently where LUO 403.1 was overlooked. However,
+          because the new garage was supposed to be on the same footprint as the
+          old cottage, a setback variance would not be needed at all.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          In fact, the new garage was not built on the old footprint, so a
+          variance from LUO 403.2 was needed. Also, this new footprint brought
+          the garage to within 36' of the road, so a front setback variance from
+          LUO 202 was also needed.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          Finally, because of the size of the new garage, building coverage was
+          greater than 10%, even with the removal of the shed, so a variance
+          from LUO 201.5 was required.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          I move that the variance application submitted by Harlan and Marie
+          Bean be denied for the following four reasons:
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          (1) The Board does not have the authority to void the Permit for
+          Construction signed by the Select Board on 1/7/2021.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          (2) The current application does not demonstrate material changes from
+          the original 11/4/2020 application in either the proposed use of the
+          land or the circumstances affecting its merits.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          (3) The application’s claim that removal of the shed reduces the
+          building coverage to a conforming level is not accurate.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          (4) On its merits, for the reasons stated above and which will be set
+          forth in the Notice of Decision.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Marshall</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          The motion is passed and the application for a variance is denied.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>
+          At 8:07pm I move that we adjourn thus evening's hearing It only
+          remains to note that our next scheduled meeting will be June 28, 2023.
+        </td>
+      </tr>
+      <tr>
+        <td class="speaker">Marshall</td>
+        <td>Seconded.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>All those in favor?</td>
+      </tr>
+      <tr>
+        <td class="speaker">All</td>
+        <td>Aye.</td>
+      </tr>
+      <tr>
+        <td class="speaker">Florence</td>
+        <td>The motion is passed and the meeting is adjourned.</td>
+      </tr>
+    </table>
+  </body>
+</html>

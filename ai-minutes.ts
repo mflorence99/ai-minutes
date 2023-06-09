@@ -1,7 +1,6 @@
 import { Configuration } from 'openai';
 import { OpenAIApi } from 'openai';
 
-import { appendFileSync } from 'fs';
 import { input } from '@inquirer/prompts';
 import { readFileSync } from 'fs';
 import { writeFileSync } from 'fs';
@@ -18,16 +17,12 @@ const openai = new OpenAIApi(configuration);
 const dir = await input({ message: 'Enter directory of minutes' });
 
 const cfg = `./${dir}/minutes.json`;
-const chk = `./${dir}/minutes.checkpoint`;
 const ifn = `./${dir}/minutes.txt`;
 const ofn = `./${dir}/minutes.html`;
 const tfn = './template.html';
 
 // 👇 read and parse the config file
 const config = JSON.parse(readFileSync(cfg).toString());
-
-// 👇 initialize the checkpoint file
-writeFileSync(chk, '');
 
 // 👇 read the raw minutes
 const raw = readFileSync(ifn).toString();
@@ -46,25 +41,48 @@ const slines: string[] = [];
 for (let i = 0; i < ilines.length; i++) {
   const line = ilines[i];
   if (line.length > 0) {
-    const match = line.match(/^\[(.*)\] ([^*+:]*)([*+]?): (.*)$/im);
-    const ts = match[1];
-    const name = match[2];
-    const alreadyEdited = match[3] === '+';
-    const quoted = match[3] === '*';
-    let text = match[4];
-    // 👇 edit via GPT
-    if (!quoted && !alreadyEdited && i < 9999 /* 👈 limit is for testing */)
-      text = (await edit(text)).map((l) => `<p>${l}</p>`).join('\n');
-    // 👇 accumulate edited lines
-    slines.push(`${name} says: ${text}`);
-    appendFileSync(chk, `[${ts}] ${name}${quoted ? '*' : '+'}: ${text}\n\n`);
-    olines.push(
-      `<tr><td>${name}</td><td>${ts}</td><td>${quoted ? '"' : ''}${text}${
-        quoted ? '"' : ''
-      }</td></tr>`
-    );
-    // 👇 wait for rate limit
-    if (!quoted && !alreadyEdited) await sleep(30000);
+    // 👇 source has timestamps
+    if (config.timestamps) {
+      const match = line.match(/^\[(.*)\] ([^*+:]*)([*+]?): (.*)$/im);
+      const ts = match[1];
+      const name = match[2];
+      const alreadyEdited = match[3] === '+';
+      const quoted = match[3] === '*';
+      let text = match[4];
+      // 👇 edit via GPT
+      if (!quoted && !alreadyEdited && i < 9999 /* 👈 limit is for testing */)
+        text = (await edit(text)).map((l) => `<p>${l}</p>`).join('\n');
+      // 👇 accumulate edited lines
+      slines.push(`${name} says: ${text}`);
+      olines.push(
+        `<tr><td class="speaker">${name}</td><td class="timestamp">${ts}</td><td>${
+          quoted ? '"' : ''
+        }${text}${quoted ? '"' : ''}</td></tr>`
+      );
+      // 👇 wait for rate limit
+      if (!quoted && !alreadyEdited) await sleep(1000);
+    }
+
+    // 👇 no timestamps in source
+    else {
+      const match = line.match(/^([^*+:]*)([*+]?): (.*)$/im);
+      const name = match[1];
+      const alreadyEdited = match[2] === '+';
+      const quoted = match[2] === '*';
+      let text = match[3];
+      // 👇 edit via GPT
+      if (!quoted && !alreadyEdited && i < 9999 /* 👈 limit is for testing */)
+        text = (await edit(text)).map((l) => `<p>${l}</p>`).join('\n');
+      // 👇 accumulate edited lines
+      slines.push(`${name} says: ${text}`);
+      olines.push(
+        `<tr><td class="speaker">${name}</td><td>${quoted ? '"' : ''}${text}${
+          quoted ? '"' : ''
+        }</td></tr>`
+      );
+      // 👇 wait for rate limit
+      if (!quoted && !alreadyEdited) await sleep(10000);
+    }
   }
 }
 
@@ -74,11 +92,11 @@ let zlines: string[] = ['<ul>'];
 for (let i = 0; i < slines.length; i++) {
   temp = `${temp}\n${slines[i]}`;
   const wordCount = temp.split(/\s+/).length;
-  if (wordCount > 1400) {
+  if (wordCount > 700) {
     zlines = zlines.concat((await summarize(temp)).map((l) => `<li>${l}</li>`));
     temp = '';
     // 👇 wait for rate limit (no need on last one)
-    if (i < slines.length - 1) await sleep(30000);
+    if (i < slines.length - 1) await sleep(10000);
   }
 }
 // 👇 don't forget the last batch

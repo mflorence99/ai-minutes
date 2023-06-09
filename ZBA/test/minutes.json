@@ -5,8 +5,9 @@
     "sampleRateHertz": 32000
   },
   "date": "2023-05-02T09:36",
-  "title": "Zoning Board of Adjustment",
   "speakers": ["Bob", "Jim"],
+  "subject": "Test Minutes",
   "subtitle": "Meeting Minutes Test",
-  "subject": "Test Minutes"
+  "timestamps": false,
+  "title": "Zoning Board of Adjustment"
 }
